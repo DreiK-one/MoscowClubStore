@@ -8,6 +8,6 @@ namespace Store
 {
     public interface IBookRepository
     {
-        List<Book> GetByTitle(string titlePart);
+        List<Book> GetAllByTitle(string titlePart);
     }
 }

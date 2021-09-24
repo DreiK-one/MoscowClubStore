@@ -12,7 +12,7 @@ namespace Store.Memory
             new Book(2, "Refactoring"),
             new Book(3, "C Programming Language")
         };
-        public List<Book> GetByTitle(string titlePart)
+        public List<Book> GetAllByTitle(string titlePart)
         {
             return Books.Where(book => book.Title.Contains(titlePart)).ToList();
         }
