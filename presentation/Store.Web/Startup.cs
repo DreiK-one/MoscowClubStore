@@ -24,6 +24,7 @@ namespace Store.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IBookRepository, BookRepository>();
+            services.AddSingleton<BookService>();
             services.AddControllersWithViews();
         }
 

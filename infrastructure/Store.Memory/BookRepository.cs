@@ -8,13 +8,21 @@ namespace Store.Memory
     {
         private readonly List<Book> Books = new List<Book>()
         {
-            new Book(1, "Art Of Programming"),
-            new Book(2, "Refactoring"),
-            new Book(3, "C Programming Language")
+            new Book(1, "ISBN 12312-31231", "D. Knuth", "Art Of Programming"),
+            new Book(2, "ISBN 12312-31232", "M. Fowler","Refactoring"),
+            new Book(3, "ISBN 12312-31232", "B. Kernighan, D. Ritchie", "C Programming Language")
         };
-        public List<Book> GetAllByTitle(string titlePart)
+
+        public List<Book> GetAllByIsbn(string isbn)
         {
-            return Books.Where(book => book.Title.Contains(titlePart)).ToList();
+            return Books.Where(book => book.Isbn == isbn).ToList();
+        }
+
+        public List<Book> GetAllByTitleOrAuthor(string query)
+        {
+            return Books.Where(book => book.Author.Contains(query)
+                                    || book.Title.Contains(query))
+                .ToList();
         }
     }
 }
