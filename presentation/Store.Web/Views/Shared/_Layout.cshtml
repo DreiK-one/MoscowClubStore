@@ -27,7 +27,7 @@
                     }
                     else
                     {
-                        @:Products of the @cart.Items.Count for the amount of @cart.Amount
+                        @:Products: @cart.Items.Values.Sum() for the amount of @cart.Amount
                     }
                 }
             </span>
