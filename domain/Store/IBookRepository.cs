@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace Store
 {
@@ -11,5 +8,7 @@ namespace Store
         List<Book> GetAllByIsbn(string isbn);
 
         List<Book> GetAllByTitleOrAuthor(string titleOrAuthor);
+
+        Book GetById(int id);
     }
 }
