@@ -14,7 +14,7 @@ namespace Store.Memory
             new Book(2, "ISBN 12312-31232", "M. Fowler","Refactoring",
                 "As the application of object technology--particularly the Java programming language--has become commonplace, a new problem has emerged to confront the software development community.",
                 12.45m),
-            new Book(3, "ISBN 12312-31232", "B. Kernighan, D. Ritchie", "C Programming Language",
+            new Book(3, "ISBN 12312-31233", "B. Kernighan, D. Ritchie", "C Programming Language",
                 "The C programming language is a computer programming language that was developed to do system programming for the operating system UNIX and is an imperative programming language",
                 14.98m)
         };
