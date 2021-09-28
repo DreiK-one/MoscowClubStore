@@ -15,15 +15,9 @@ namespace Store
             get { return _items; }                
         }
 
-        public int TotalCount
-        {
-            get { return _items.Sum(item => item.Count); }
-        }
+        public int TotalCount => _items.Sum(item => item.Count); 
 
-        public decimal TotalPrice
-        {
-            get { return _items.Sum(item => item.Price * item.Count); }
-        }
+        public decimal TotalPrice => _items.Sum(item => item.Price * item.Count);
 
 
         public Order(int id, IEnumerable<OrderItem> items)
@@ -34,25 +28,50 @@ namespace Store
             }
 
             Id = id;
+
             _items = new List<OrderItem>(items);
         }
 
-        public void AddItem(Book book, int count)
+        public OrderItem GetItem(int bookId)
+        {
+            int index = _items.FindIndex(item => item.BookId == bookId);
+
+            if (index == -1)
+                ThrowBookException("Book not found.", bookId);
+
+            return _items[index];
+        }
+
+        public void AddOrUpdateItem(Book book, int count)
         {
             if (book == null)
                 throw new ArgumentNullException(nameof(book));
 
-            var item = Items.SingleOrDefault(x => x.BookId == book.Id);
+            int index = _items.FindIndex(item => item.BookId == book.Id);
 
-            if (item == null)
-            {
+            if (index == -1)
                 _items.Add(new OrderItem(book.Id, count, book.Price));
-            }
             else
-            {
-                _items.Remove(item);
-                _items.Add(new OrderItem(book.Id, item.Count + count, book.Price));
-            }
+                _items[index].Count += count;
+        }
+
+        public void RemoveItem(int bookId)
+        {
+            int index = _items.FindIndex(item => item.BookId == bookId);
+
+            if (index == -1)
+                ThrowBookException("Order does not contain specified item.", bookId);
+
+            _items.RemoveAt(index);
+        }
+
+        private void ThrowBookException(string message, int bookId)
+        {
+            var exception = new InvalidOperationException(message);
+
+            exception.Data["BookId"] = bookId;
+ 
+            throw exception;
         }
     }
 }
