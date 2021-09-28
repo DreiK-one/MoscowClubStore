@@ -73,18 +73,18 @@ namespace Store.Web.Controllers
 
             SaveOrderAndCart(order, cart);
 
-            return RedirectToAction("Index", "Book", new { id = bookId });
+            return RedirectToAction("Index", "Order");
         }
 
-        public IActionResult RemoveItem(int id)
+        public IActionResult RemoveItem(int bookId)
         {
             (Order order, Cart cart) = GetOrCreateOrderAndCart();
 
-            order.RemoveItem(id);
+            order.RemoveItem(bookId);
             
             SaveOrderAndCart(order, cart);
 
-            return RedirectToAction("Index", "Book", new { id });
+            return RedirectToAction("Index", "Order");
         }
 
         private (Order order, Cart cart) GetOrCreateOrderAndCart()
