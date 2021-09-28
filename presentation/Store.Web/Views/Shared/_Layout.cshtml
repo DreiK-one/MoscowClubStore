@@ -17,17 +17,13 @@
             </form>
             <span class="navbar-text ml-auto">
                 @{
-                    Cart cart;
-                    if (!Context.Session.TryGetCart(out cart))
-                        cart = new Cart();
-
-                    if (cart.Items.Count == 0)
+                    if (Context.Session.TryGetCart(out Cart cart) && cart.TotalCount > 0)
                     {
-                        @:Cart is empty
+                                <a href="">@cart.TotalCount products for the amount of @cart.TotalPrice </a>
                     }
                     else
                     {
-                        @:Products: @cart.Items.Values.Sum() for the amount of @cart.Amount
+                        @:Your cart is empty
                     }
                 }
             </span>

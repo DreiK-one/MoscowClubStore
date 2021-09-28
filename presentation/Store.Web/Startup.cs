@@ -28,7 +28,7 @@ namespace Store.Web
                 options.Cookie.IsEssential = true;
             });
 
-
+            services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<IBookRepository, BookRepository>();
             services.AddSingleton<BookService>();
             
