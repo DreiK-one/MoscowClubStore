@@ -19,6 +19,14 @@ namespace Store.Memory
                 14.98m)
         };
 
+        public List<Book> GetAllByIds(IEnumerable<int> bookIds)
+        {
+            var foundBooks = from book in books
+                             join bookId in bookIds on book.Id equals bookId
+                             select book;
+            return foundBooks.ToList();
+        }
+
         public List<Book> GetAllByIsbn(string isbn)
         {
             return books.Where(book => book.Isbn == isbn).ToList();
