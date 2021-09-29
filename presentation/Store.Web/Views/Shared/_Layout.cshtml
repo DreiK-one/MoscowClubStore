@@ -13,13 +13,13 @@
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Store on C#</a>
             <form class="form-inline my-2 my-lg-0" action="@Url.Action("Index", "Search")" method="get">
                 <input class="form-control mr-sm-2" type="search" name="query" placeholder="author or name"/>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Find</button>
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">Find</button>
             </form>
             <span class="navbar-text ml-auto">
                 @{
                     if (Context.Session.TryGetCart(out Cart cart) && cart.TotalCount > 0)
                     {
-                                <a href="@Url.Action("Index", "Order")">@cart.TotalCount products for the amount of @cart.TotalPrice </a>
+                                <a href="@Url.Action("Index", "Order")">@cart.TotalCount products for the amount of @cart.TotalAmount </a>
                     }
                     else
                     {

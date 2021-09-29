@@ -13,7 +13,7 @@ namespace Store.Memory
         public Order Create()
         {
             int nextId = orders.Count + 1;
-            var order = new Order(nextId, new OrderItem[0]);
+            var order = new Order(nextId, OrderState.Created, Enumerable.Empty<OrderItem>());
             orders.Add(order);
 
             return order;

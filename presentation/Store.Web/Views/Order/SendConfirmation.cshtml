@@ -1,0 +1,36 @@
+﻿@model OrderModel
+
+@{
+    ViewData["Title"] = "Checking the code";
+}
+
+@await Html.PartialAsync("PartialDetails", Model)
+
+<form action="@Url.Action("ConfirmCellPhone")" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="hidden" name="cellPhone" value="@Model.CellPhone" />
+    <div class="form-group">
+        <label for="code">Confirmation code</label>
+        <input type="text" class="form-control" name="code" placeholder="0000" />
+        @if (Model.Errors.ContainsKey("code"))
+        {
+            <small class="form-text text-danger">@Model.Errors["code"]</small>
+        }
+    </div>
+    <button type="submit" class="btn btn-success">Confirm</button>
+</form>
+
+<p>
+    If you haven't received an SMS with the code, 
+    check the phone number and try again.
+</p>
+<form action="@Url.Action("SendConfirmation")" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <label for="cellPhone">Mobile phone</label>
+        <input type="text" class="form-control" name="cellPhone" placeholder="+48123456789" />
+    </div>
+    <button type="submit" class="btn btn-success">Send the code</button>
+</form>
+
+

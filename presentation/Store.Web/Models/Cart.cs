@@ -9,13 +9,13 @@ namespace Store.Web.Models
 
         public int TotalCount { get; set; }
 
-        public decimal TotalPrice { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public Cart(int orderId)
         {
             OrderId = orderId;
             TotalCount = 0;
-            TotalPrice = 0m;
+            TotalAmount = 0m;
         }
     }
 }
