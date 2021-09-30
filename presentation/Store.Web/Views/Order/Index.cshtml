@@ -6,11 +6,54 @@
 
 <h1>Cart</h1>
 
-@await Html.PartialAsync("PartialDetails", Model)
+<table class="table table-sm table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Author</th>
+            <th scope="col">Name</th>
+            <th scope="col">Number</th>
+            <th scope="col">Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Items.Length; i++)
+        {
+            <tr>
+                <td class="text-right">@(i + 1)</td>
+                <td>@Model.Items[i].Author</td>
+                <td>@Model.Items[i].Title</td>
+                <td class="text-right">@Model.Items[i].Count</td>
+                <td class="text-right">@Model.Items[i].Price</td>
+                <td class="text-centert">
+                    <form class="form-inline" asp-controller="Order" asp-action="RemoveItem" method="post">
+                        <input type="hidden" name="bookId" value="@Model.Items[i].BookId" />
+                        <button class="btn btn-danger" type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">Total</td>
+            <td class="text-right">@Model.TotalCount</td>
+            <td class="text-right">@Model.TotalAmount</td>
+        </tr>
+    </tfoot>
+</table>
 
-<form action="@Url.Action("StartProcess")" method="post">
+<form action="@Url.Action("SendConfirmationCode")" method="post">
     <input type="hidden" name="id" value="@Model.Id" />
-    <button type="submit" class="btn btn-success">Place an order</button>
+    <div class="form-group">
+        <label for="cellPhone">Mobile phone</label>
+        <input type="text" class="form-control" name="cellPhone" placeholder="+48123456789" />
+        @if (Model.Errors.ContainsKey("cellPhone"))
+        {
+            <small class="form-text text-danger">@Model.Errors["cellPhone"]</small>
+        }
+    </div>
+    <button type="submit" class="btn btn-success">Send the code</button>
 </form>
 
 

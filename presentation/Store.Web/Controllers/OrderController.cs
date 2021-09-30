@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Store;
+using System.Collections.Generic;
 
 namespace Store.Web.Controllers
 {
@@ -21,12 +22,13 @@ namespace Store.Web.Controllers
             this.notificationService = notificationService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             if (HttpContext.Session.TryGetCart(out Cart cart))
             {
                 var order = orderRepository.GetById(cart.OrderId);
-                var model = Map(order);
+                OrderModel model = Map(order);
 
                 return View(model);
             }
@@ -62,6 +64,7 @@ namespace Store.Web.Controllers
         public IActionResult AddItem(int bookId, int count = 1)
         {
             (Order order, Cart cart) = GetOrCreateOrderAndCart();
+
             var book = bookRepository.GetById(bookId);
 
             order.AddOrUpdateItem(book, count);
@@ -121,21 +124,8 @@ namespace Store.Web.Controllers
             HttpContext.Session.Set(cart);
         }
 
-
         [HttpPost]
-        public IActionResult StartProcess(int id)
-        {
-            var order = orderRepository.GetById(id);
-            order.StartProcess();
-            orderRepository.Update(order);
-
-            var model = Map(order);
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult SendConfirmation(int id, string cellPhone)
+        public IActionResult SendConfirmationCode(int id, string cellPhone)
         {
             var order = orderRepository.GetById(id);
             var model = Map(order);
@@ -143,15 +133,19 @@ namespace Store.Web.Controllers
             if (!IsValidCellPhone(cellPhone))
             {
                 model.Errors["cellPhone"] = "Empty or does not match the format +48123456789";
-                return View("StartProcess", model);
+                return View("Index", model);
             }
 
-            var code = GenerateCode();
+            int code = 1111;
             HttpContext.Session.SetInt32(cellPhone, code);
             notificationService.SendConfirmationCode(cellPhone, code);
-            model.CellPhone = cellPhone;
 
-            return View(model);
+            return View("SendConfirmation", 
+                new ConfirmationModel 
+                { 
+                    OrderId = id,
+                    CellPhone = cellPhone 
+                });
         }
 
         private bool IsValidCellPhone(string cellPhone)
@@ -160,12 +154,6 @@ namespace Store.Web.Controllers
                                  ?.Replace("-", "");
 
             return Regex.IsMatch(cellPhone, @"^\+?\d{11}$");
-        }
-
-        private int GenerateCode()
-        {
-            var random = new Random();
-            return random.Next(1, 10000);
         }
 
         [HttpPost]
@@ -190,6 +178,42 @@ namespace Store.Web.Controllers
             HttpContext.Session.Remove(cellPhone);
 
             return View(model);
+        }
+
+        public IActionResult StartDelivery(int id, string cellPhone, int code)
+        {
+            int? storedCode = HttpContext.Session.GetInt32(cellPhone);
+            if (storedCode == null)
+            {
+                return View("SendConfirmation",
+                    new ConfirmationModel
+                    {
+                        OrderId = id,
+                        CellPhone = cellPhone,
+                        Errors = new Dictionary<string, string>
+                        {
+                            { "code" , "Code is null. Please, repeat sending the code."}
+                        }
+                    });
+            }
+
+            if (storedCode != code)
+            {
+                return View("SendConfirmation",
+                    new ConfirmationModel
+                    {
+                        OrderId = id,
+                        CellPhone = cellPhone,
+                        Errors = new Dictionary<string, string>
+                        {
+                            { "code" , "The code differs from the sent code."}
+                        }
+                    });
+            }
+
+            //
+
+            return View();
         }
     }
 }

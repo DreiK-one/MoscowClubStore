@@ -1,36 +1,32 @@
-﻿@model OrderModel
+﻿@model ConfirmationModel
 
 @{
-    ViewData["Title"] = "Checking the code";
+    ViewData["Title"] = "Confirmation of the mobile";
 }
 
-@await Html.PartialAsync("PartialDetails", Model)
+<h1>Confirmation of the mobile</h1>
 
-<form action="@Url.Action("ConfirmCellPhone")" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
+<form action="@Url.Action("StartDelivery")" method="post">
+    <input type="hidden" name="id" value="@Model.OrderId" />
     <input type="hidden" name="cellPhone" value="@Model.CellPhone" />
     <div class="form-group">
         <label for="code">Confirmation code</label>
-        <input type="text" class="form-control" name="code" placeholder="0000" />
+        <input type="text" class="form-control" name="code" placeholder="0000"/>
         @if (Model.Errors.ContainsKey("code"))
-        {
+        { 
             <small class="form-text text-danger">@Model.Errors["code"]</small>
         }
     </div>
-    <button type="submit" class="btn btn-success">Confirm</button>
+    <button type="submit" class="btn btn-success">Check</button>
 </form>
 
-<p>
-    If you haven't received an SMS with the code, 
-    check the phone number and try again.
-</p>
-<form action="@Url.Action("SendConfirmation")" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
+
+<form action="@Url.Action("SendConfirmationCode")" method="post">
+    <input type="hidden" name="id" value="@Model.OrderId" />
     <div class="form-group">
         <label for="cellPhone">Mobile phone</label>
-        <input type="text" class="form-control" name="cellPhone" placeholder="+48123456789" />
+        <input type="text" class="form-control" name="cellPhone" placeholder="@Model.CellPhone" />
     </div>
-    <button type="submit" class="btn btn-success">Send the code</button>
+    <button type="submit" class="btn btn-success">Send the code again</button>
 </form>
-
 
