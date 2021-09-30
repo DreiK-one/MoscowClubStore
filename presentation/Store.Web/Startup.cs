@@ -1,8 +1,10 @@
+using Contractors.Postamate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Store.Contractors;
 using Store.Memory;
 using System;
 
@@ -30,9 +32,10 @@ namespace Store.Web
 
             services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<IBookRepository, BookRepository>();
-            services.AddSingleton<BookService>();
             services.AddSingleton<INotificationService, NotificationService>();
-
+            services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
+            services.AddSingleton<BookService>();
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
