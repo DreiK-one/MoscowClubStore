@@ -2,6 +2,7 @@
 using Store.Contractors;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Contractors.Postamate
 {
@@ -39,6 +40,40 @@ namespace Contractors.Postamate
 
         public string Title => "Delivery by mail in Los Angeles and New York";
 
+        public OrderDelivery GetDelivery(Form form)
+        {
+            //if (form == null)
+            //    throw new ArgumentNullException(nameof(form));
+
+            if (form.UniqueCode != UniqueCode || /*form.Step != 3 || */!form.IsFinal)
+                throw new InvalidOperationException("Unrecognized form data.");
+
+            //var cityId = form.Fields[0].Value;
+            //var city = cities[cityId];
+            //var postamateId = form.Fields[1].Value;
+            //var postamate = postamates[cityId][postamateId];
+
+            //var description = $"City: {city}\nPost: {postamate}\n";
+            //var parameters = new { CityId = cityId, PostamateId = postamateId };
+
+            //return new OrderDelivery(UniqueCode, description, parameters, 100m);
+
+            var cityId = form.Fields.Single(field => field.Name == "city").Value;
+            var cityName = cities[cityId];
+            var postamateId = form.Fields.Single(field => field.Name == "postamate").Value;
+            var postamateName = postamates[cityId][postamateId];    
+            var parameters = new Dictionary<string, string>
+            {
+                {nameof(cityId), cityId },
+                {nameof(cityName), cityName },
+                {nameof(postamateId), postamateId },
+                {nameof(postamateName),postamateName },
+            };
+
+            var description = $"City: {cityName}\nPost: {postamateName}\n";
+            return new OrderDelivery(UniqueCode, description, parameters, 0m);
+        }
+
         public Form CreateForm(Order order)
         {
             if (order == null)
@@ -50,26 +85,7 @@ namespace Contractors.Postamate
             });
         }
 
-        public OrderDelivery GetDelivery(Form form)
-        {
-            if (form == null)
-                throw new ArgumentNullException(nameof(form));
-
-            if (form.UniqueCode != UniqueCode || form.Step != 3 || !form.IsFinal)
-                throw new InvalidOperationException("Unrecognized form data.");
-
-            var cityId = form.Fields[0].Value;
-            var city = cities[cityId];
-            var postamateId = form.Fields[1].Value;
-            var postamate = postamates[cityId][postamateId];
-
-            var description = $"City: {city}\nPost: {postamate}\n";
-            var parameters = new { CityId = cityId, PostamateId = postamateId };
-
-            return new OrderDelivery(UniqueCode, description, parameters, 100m);
-        }
-
-        public Form MoveNext(int orderId, int step, IReadOnlyDictionary<string, string> values)
+        public Form MoveNextForm(int orderId, int step, IReadOnlyDictionary<string, string> values)
         {
             if (step == 1)
             {

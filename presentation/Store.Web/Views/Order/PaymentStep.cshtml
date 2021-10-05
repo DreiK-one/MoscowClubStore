@@ -1,10 +1,11 @@
-﻿@model Form
+﻿@using Store.Web.Controllers
+@model Form
 @{ 
-    ViewData["Title"] = "Delivery parameters";
+    ViewData["Title"] = "Payment parameters";
 }
 
-<h1>Delivery parameters</h1>
-<form action="@Url.Action("NextDelivery")" method="post">
+<h1>Payment parameters</h1>
+<form action="@Url.Action(nameof(OrderController.NextPayment))" method="post">
     <input type="hidden" name="id" value="@Model.OrderId" />
     <input type="hidden" name="uniqueCode" value="@Model.UniqueCode" />
     <input type="hidden" name="step" value="@Model.Step" />

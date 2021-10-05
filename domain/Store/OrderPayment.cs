@@ -1,27 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Store
 {
     public class OrderPayment
     {
-        public string Code { get; }
+        public string UniqueCode { get; }
 
         public string Description { get; }
 
-        public object Parameters { get; }
+        public IReadOnlyDictionary<string, string> Parameters { get; }
 
-        public OrderPayment(string code, string description, object parameters)
+        public OrderPayment(string uniqueCode, string description, IReadOnlyDictionary<string, string> parameters)
         {
-            if (code == null)
-                throw new ArgumentNullException(nameof(code));
+            if (string.IsNullOrWhiteSpace(uniqueCode))
+                throw new ArgumentException(nameof(uniqueCode));
 
-            if (description == null)
-                throw new ArgumentNullException(nameof(description));
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException(nameof(description));
 
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            Code = code;
+            UniqueCode = uniqueCode;
             Description = description;
             Parameters = parameters;
         }
