@@ -24,7 +24,7 @@ namespace Store.Tests
         {
             var order = new Order(1, OrderState.Created, new OrderItem[0]);
 
-            Assert.Equal(0m, order.TotalAmount);
+            Assert.Equal(0m, order.TotalPrice);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Store.Tests
                 new OrderItem(2, 5, 100m)
             });
 
-            Assert.Equal(3 * 10m + 5 * 100m, order.TotalAmount);
+            Assert.Equal(3 * 10m + 5 * 100m, order.TotalPrice);
         }
 
         [Fact]

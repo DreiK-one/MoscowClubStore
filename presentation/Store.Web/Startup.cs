@@ -34,6 +34,7 @@ namespace Store.Web
             services.AddSingleton<IBookRepository, BookRepository>();
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
+            services.AddSingleton<IPaymentService, CashPaymentService>();
             services.AddSingleton<BookService>();
             
         }

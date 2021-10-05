@@ -1,32 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Store
 {
     public class OrderDelivery
     {
-        public string Code { get; }
+        public string UniqueCode { get; }
 
         public string Description { get; }
 
-        public object Parameters { get; }
+        public IReadOnlyDictionary<string, string> Parameters { get; }
 
-        public decimal Price { get; }
+        public decimal Amount { get; }
 
-        public OrderDelivery(string code, string description, object parameters, decimal price)
+        public OrderDelivery(string uniqueCode, string description, IReadOnlyDictionary<string, string> parameters, decimal amount)
         {
-            if (code == null)
-                throw new ArgumentNullException(nameof(code));
+            if (string.IsNullOrWhiteSpace(uniqueCode))
+                throw new ArgumentException(nameof(uniqueCode));
 
-            if (description == null)
-                throw new ArgumentNullException(nameof(description));
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException(nameof(description));
 
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            Code = code;
+            UniqueCode = uniqueCode;
             Description = description;
             Parameters = parameters;
-            Price = price;
+            Amount = amount;
         }
     }
 }
