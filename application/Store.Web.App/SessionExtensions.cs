@@ -25,7 +25,7 @@ namespace Store.Web
             {
                 writer.Write(value.OrderId);
                 writer.Write(value.TotalCount);
-                writer.Write(value.TotalAmount);
+                writer.Write(value.TotalPrice);
                 session.Set(key, stream.ToArray());
             }
         }
@@ -38,12 +38,8 @@ namespace Store.Web
                 {
                     int orderId = reader.ReadInt32();
                     int totalCount = reader.ReadInt32();
-                    decimal totalAmount = reader.ReadDecimal();
-                    value = new Cart(orderId)
-                    {
-                        TotalCount = totalCount,
-                        TotalAmount = totalAmount,
-                    };
+                    decimal totalPrice = reader.ReadDecimal();
+                    value = new Cart(orderId, totalCount, totalPrice);
                 }
                 return true;
             }
