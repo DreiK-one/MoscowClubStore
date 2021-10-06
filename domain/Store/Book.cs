@@ -9,7 +9,7 @@ namespace Store
 
         public string Isbn { get; }
 
-        public string Author { get; } //In real project - Id_author
+        public string Author { get; }
 
         public string Title { get; }
 
@@ -27,7 +27,7 @@ namespace Store
             Price = price;
         }
 
-        internal static bool IsIsbn(string s)
+        public static bool IsIsbn(string s)
         {
             if (s == null)
                 return false;

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Store
 {
@@ -13,6 +11,9 @@ namespace Store
 
         public OrderItemCollection(IEnumerable<OrderItem> items)
         {
+            if (items == null)
+                throw new ArgumentNullException(nameof(items));
+
             this.items = new List<OrderItem>(items);
         }
 
@@ -22,31 +23,11 @@ namespace Store
         {
             get
             {
-                int index = IndexByBookId(bookId);
+                if (TryGet(bookId, out OrderItem orderItem))
+                    return orderItem;
 
-                return items[index];
+                throw new InvalidOperationException("Book not found.");
             }
-        }
-
-        public OrderItem Add(int bookId, decimal price, int count)
-        {
-            var orderItem = items.SingleOrDefault(item => item.BookId == bookId);
-            if (orderItem == null)
-            {
-                orderItem = new OrderItem(bookId, count, price);
-                items.Add(orderItem);
-            }
-            else
-                orderItem.Count += count;
-
-            return orderItem;
-        }
-
-        public void Remove(int bookId)
-        {
-            int index = IndexByBookId(bookId);
-
-            items.RemoveAt(index);
         }
 
         public IEnumerator<OrderItem> GetEnumerator()
@@ -59,14 +40,33 @@ namespace Store
             return (items as IEnumerable).GetEnumerator();
         }
 
-        private int IndexByBookId(int bookId)
+        public bool TryGet(int bookId, out OrderItem orderItem)
         {
-            int index = items.FindIndex(item => item.BookId == bookId);
+            var index = items.FindIndex(item => item.BookId == bookId);
+            if (index >= 0)
+            {
+                orderItem = items[index];
+                return true;
+            }
 
-            if (index == -1)
-                throw new InvalidOperationException("Specified book not found.");
+            orderItem = null;
+            return false;
+        }
 
-            return index;
+        public OrderItem Add(int bookId, decimal bookPrice, int count)
+        {
+            if (TryGet(bookId, out OrderItem orderItem))
+                throw new InvalidOperationException("Book already exists.");
+
+            orderItem = new OrderItem(bookId, bookPrice, count);
+            items.Add(orderItem);
+
+            return orderItem;
+        }
+
+        public void Remove(int bookId)
+        {
+            items.Remove(this[bookId]);
         }
     }
 }

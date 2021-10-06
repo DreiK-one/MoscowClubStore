@@ -1,5 +1,4 @@
 ﻿@model OrderModel
-
 @{
     ViewData["Title"] = "Cart";
 }
@@ -14,10 +13,11 @@
             <th scope="col">Name</th>
             <th scope="col">Number</th>
             <th scope="col">Price</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < Model.Items.Length; i++)
+        @for (int i = 0; i < Model.Items.Count; i++)
         {
             <tr>
                 <td class="text-right">@(i + 1)</td>
@@ -25,8 +25,8 @@
                 <td>@Model.Items[i].Title</td>
                 <td class="text-right">@Model.Items[i].Count</td>
                 <td class="text-right">@Model.Items[i].Price</td>
-                <td class="text-centert">
-                    <form class="form-inline" asp-controller="Order" asp-action="RemoveItem" method="post">
+                <td class="text-center">
+                    <form class="form-inline" action="@Url.Action("RemoveItem", "Order")" method="post">
                         <input type="hidden" name="bookId" value="@Model.Items[i].BookId" />
                         <button class="btn btn-danger" type="submit">Remove</button>
                     </form>
@@ -38,13 +38,19 @@
         <tr>
             <td colspan="3" class="text-right">Total</td>
             <td class="text-right">@Model.TotalCount</td>
-            <td class="text-right">@Model.TotalAmount</td>
+            <td class="text-right">@Model.TotalPrice</td>
         </tr>
     </tfoot>
 </table>
 
-<form action="@Url.Action("SendConfirmationCode")" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
+<p>
+    To place an order, you need to confirm your mobile number.
+    Enter the number and click <i>Send code</i>. A <i>confirmation code</i> will be sent to your number.
+</p>
+
+
+
+<form action="@Url.Action(nameof(OrderController.SendConfirmation))" method="post">
     <div class="form-group">
         <label for="cellPhone">Mobile phone</label>
         <input type="text" class="form-control" name="cellPhone" placeholder="+48123456789" />
