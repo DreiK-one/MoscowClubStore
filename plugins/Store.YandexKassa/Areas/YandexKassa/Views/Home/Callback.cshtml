@@ -1,12 +1,17 @@
-﻿@{
+﻿@using Store.YandexKassa.Areas.YandexKassa.Models
+@model ExampleModel
+@{
     ViewData["Title"] = "The order is paid";
 }
 
 <h1>The order is paid</h1>
 
-<p>---Imitation of the payment system page---</p>
+<p>The order is paid. To complete the registration, click <em>Next</em></p>
 
-<p>
-    <a href="@Url.Action("Finish", "Order")">Back to the shop</a>
-</p>
+<form action="@Model.ReturnUri" method="post">
+    <input type="hidden" name="serviceName" value="YandexKassa" />
+    <input type="hidden" name="step" value="1" />
+    <input type="hidden" name="orderId" value="@Model.OrderId" />
+    <button type="submit" class="btn btn-success">Next</button>
+</form>
 

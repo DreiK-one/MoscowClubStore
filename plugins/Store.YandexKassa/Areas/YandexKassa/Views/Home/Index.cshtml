@@ -1,12 +1,20 @@
-﻿@{
+﻿@using Store.YandexKassa.Areas.YandexKassa.Controllers
+@using Store.YandexKassa.Areas.YandexKassa.Models
+@model ExampleModel
+@{
     ViewData["Title"] = "Yandex.Kassa";
 }
 
 <h1>Yandex.Kassa</h1>
 
-<p>---Imitation of the payment system page---</p>
-
 <p>
-    <a href="Home/Callback">To pay</a>
+    Here we emulate a redirect to the external Yandex payment service.Cash. In the source code
+    of the project, you can see how parameters are passed.
 </p>
+
+<form action="@Url.Action(nameof(HomeController.Callback), "Home", new { area = "YandexKassa" })" method="post">
+    <input type="hidden" name="orderId" value="@Model.OrderId" />
+    <input type="hidden" name="returnUri" value="@Model.ReturnUri" />
+    <button type="submit" class="btn btn-success">To pay</button>
+</form>
 

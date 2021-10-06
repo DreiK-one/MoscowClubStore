@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-
-namespace Store.Web.Models
+namespace Store.Web.App
 {
     public class OrderModel
     {
         public int Id { get; set; }
 
-        public OrderItemModel[] Items { get; set; } = new OrderItemModel[0];
+        public IReadOnlyList<OrderItemModel> Items { get; set; } = new OrderItemModel[0];
 
         public int TotalCount { get; set; }
 
-        public decimal TotalAmount { get; set; }
+        public decimal TotalPrice { get; set; }
 
         public string CellPhone { get; set; }
 

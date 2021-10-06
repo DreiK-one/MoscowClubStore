@@ -13,7 +13,7 @@ namespace Store
 
         public decimal Amount { get; }
 
-        public OrderDelivery(string uniqueCode, string description, IReadOnlyDictionary<string, string> parameters, decimal amount)
+        public OrderDelivery(string uniqueCode, string description, decimal amount, IReadOnlyDictionary<string, string> parameters)
         {
             if (string.IsNullOrWhiteSpace(uniqueCode))
                 throw new ArgumentException(nameof(uniqueCode));

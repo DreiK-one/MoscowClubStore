@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Store.Web.Models;
 using System;
 using System.IO;
 using System.Text;
 
 
-namespace Store.Web
+namespace Store.Web.App
 {
     public static class SessionExtensions
     {
@@ -19,13 +18,15 @@ namespace Store.Web
         public static void Set(this ISession session, Cart value)
         {
             if (value == null)
-                throw new ArgumentNullException(nameof(value));
+                return;
+
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream, Encoding.UTF8, true))
             {
                 writer.Write(value.OrderId);
                 writer.Write(value.TotalCount);
                 writer.Write(value.TotalPrice);
+
                 session.Set(key, stream.ToArray());
             }
         }
@@ -39,9 +40,10 @@ namespace Store.Web
                     int orderId = reader.ReadInt32();
                     int totalCount = reader.ReadInt32();
                     decimal totalPrice = reader.ReadDecimal();
+
                     value = new Cart(orderId, totalCount, totalPrice);
+                    return true;
                 }
-                return true;
             }
             value = null;
             return false;

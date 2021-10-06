@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Store.Web.App
 {
     public class BookModel
@@ -12,7 +7,7 @@ namespace Store.Web.App
 
         public string Isbn { get; set; }
 
-        public string Author { get; set; } //In real project - Id_author
+        public string Author { get; set; }
 
         public string Title { get; set; }
 

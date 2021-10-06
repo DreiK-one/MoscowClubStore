@@ -32,8 +32,8 @@ namespace Store.Tests
         public void TotalCount_WithNonEmptyItems_CalculatesTotalCount()
         {
             var order = new Order(1, Enumerable.Empty<OrderItem>());
-            order.Items.Add(bookId: 1, price: 10m, count: 3);
-            order.Items.Add(bookId: 2, price: 100m, count: 5);
+            order.Items.Add(bookId: 1, 10m, 3);
+            order.Items.Add(bookId: 2, 100m, 5);
 
             Assert.Equal(3 + 5, order.TotalCount);
         }
