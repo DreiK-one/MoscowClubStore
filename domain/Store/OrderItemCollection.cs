@@ -13,41 +13,13 @@ namespace Store
 
         public OrderItemCollection(IEnumerable<OrderItem> items)
         {
+            if (items == null)
+                throw new ArgumentNullException(nameof(items));
+
             this.items = new List<OrderItem>(items);
         }
 
         public int Count => items.Count;
-
-        public OrderItem this[int bookId]
-        {
-            get
-            {
-                int index = IndexByBookId(bookId);
-
-                return items[index];
-            }
-        }
-
-        public OrderItem Add(int bookId, decimal price, int count)
-        {
-            var orderItem = items.SingleOrDefault(item => item.BookId == bookId);
-            if (orderItem == null)
-            {
-                orderItem = new OrderItem(bookId, count, price);
-                items.Add(orderItem);
-            }
-            else
-                orderItem.Count += count;
-
-            return orderItem;
-        }
-
-        public void Remove(int bookId)
-        {
-            int index = IndexByBookId(bookId);
-
-            items.RemoveAt(index);
-        }
 
         public IEnumerator<OrderItem> GetEnumerator()
         {
@@ -59,14 +31,41 @@ namespace Store
             return (items as IEnumerable).GetEnumerator();
         }
 
-        private int IndexByBookId(int bookId)
+        public OrderItem Get(int bookId)
         {
-            int index = items.FindIndex(item => item.BookId == bookId);
+            if (TryGet(bookId, out OrderItem orderItem))
+                return orderItem;
 
+            throw new InvalidOperationException("Book not found");
+        }
+
+        public bool TryGet(int bookId, out OrderItem orderItem)
+        {
+            var index = items.FindIndex(item => item.BookId == bookId);
             if (index == -1)
-                throw new InvalidOperationException("Specified book not found.");
+            {
+                orderItem = null;
+                return false;
+            }
 
-            return index;
+            orderItem = items[index];
+            return true;
+        }
+
+        public OrderItem Add(int bookId, decimal price, int count)
+        {
+            if (TryGet(bookId, out OrderItem orderItem))
+                throw new InvalidOperationException("Book already exists");
+
+            orderItem = new OrderItem(bookId, price, count);
+            items.Add(orderItem);
+
+            return orderItem;
+        }
+
+        public void Remove(int bookId)
+        {
+            items.Remove(Get(bookId));
         }
     }
 }

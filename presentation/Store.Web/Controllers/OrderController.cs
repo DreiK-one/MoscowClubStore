@@ -65,13 +65,11 @@ namespace Store.Web.Controllers
             return new OrderModel
             {
                 Id = order.Id,
-                State = order.State,
                 Items = itemModels.ToArray(),
                 TotalCount = order.TotalCount,
                 TotalAmount = order.TotalPrice,
             };
         }
-
 
         [HttpPost]
         public IActionResult AddItem(int bookId, int count = 1)
@@ -80,7 +78,10 @@ namespace Store.Web.Controllers
 
             var book = bookRepository.GetById(bookId);
 
-            order.AddOrUpdateItem(book, count);
+            if (order.Items.TryGet(bookId, out OrderItem orderItem))
+                orderItem.Count += count;
+            else
+                order.Items.Add(book.Id, book.Price, count);
 
             SaveOrderAndCart(order, cart);
 
@@ -93,7 +94,7 @@ namespace Store.Web.Controllers
         {
             (Order order, Cart cart) = GetOrCreateOrderAndCart();
 
-            order.GetItem(bookId).Count = count;
+            order.Items.Get(bookId).Count = count;
 
             SaveOrderAndCart(order, cart);
 
@@ -105,7 +106,7 @@ namespace Store.Web.Controllers
         {
             (Order order, Cart cart) = GetOrCreateOrderAndCart();
 
-            order.RemoveItem(bookId);
+            order.Items.Remove(bookId);
 
             SaveOrderAndCart(order, cart);
 
