@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.Tests
+namespace Store.Data.EF
 {
-    class StubBookRepository : IBookRepository
+    class BookRepository : IBookRepository
     {
-        public Book[] ResultOfGetAllByIsbn { get; set; }
-
-        public Book[] ResultOfGetAllByTitleOrAuthor { get; set; }
-
         public Book[] GetAllByIds(IEnumerable<int> bookId)
         {
             throw new NotImplementedException();
@@ -19,12 +15,12 @@ namespace Store.Tests
 
         public Book[] GetAllByIsbn(string isbn)
         {
-            return ResultOfGetAllByIsbn;
+            throw new NotImplementedException();
         }
 
         public Book[] GetAllByTitleOrAuthor(string titleOrAuthor)
         {
-            return ResultOfGetAllByTitleOrAuthor;
+            throw new NotImplementedException();
         }
 
         public Book GetById(int id)

@@ -5,11 +5,11 @@ namespace Store
 {
     public interface IBookRepository
     {
-        List<Book> GetAllByIsbn(string isbn);
+        Book[] GetAllByIsbn(string isbn);
 
-        List<Book> GetAllByTitleOrAuthor(string titleOrAuthor);
+        Book[] GetAllByTitleOrAuthor(string titleOrAuthor);
 
         Book GetById(int id);
-        List<Book> GetAllByIds(IEnumerable<int> bookId);
+        Book[] GetAllByIds(IEnumerable<int> bookId);
     }
 }
