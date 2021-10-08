@@ -8,21 +8,21 @@ namespace Store.Tests
 {
     class StubBookRepository : IBookRepository
     {
-        public List<Book> ResultOfGetAllByIsbn { get; set; }
+        public Book[] ResultOfGetAllByIsbn { get; set; }
 
-        public List<Book> ResultOfGetAllByTitleOrAuthor { get; set; }
+        public Book[] ResultOfGetAllByTitleOrAuthor { get; set; }
 
-        public List<Book> GetAllByIds(IEnumerable<int> bookId)
+        public Book[] GetAllByIds(IEnumerable<int> bookId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Book> GetAllByIsbn(string isbn)
+        public Book[] GetAllByIsbn(string isbn)
         {
             return ResultOfGetAllByIsbn;
         }
 
-        public List<Book> GetAllByTitleOrAuthor(string titleOrAuthor)
+        public Book[] GetAllByTitleOrAuthor(string titleOrAuthor)
         {
             return ResultOfGetAllByTitleOrAuthor;
         }

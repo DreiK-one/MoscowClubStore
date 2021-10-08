@@ -14,8 +14,6 @@ namespace Store.Web.App
         private readonly INotificationService notificationService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        private readonly PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.GetInstance();
-
         protected ISession Session => httpContextAccessor.HttpContext.Session;
 
         public OrderService(IBookRepository bookRepository,
@@ -73,26 +71,15 @@ namespace Store.Web.App
                 Items = items.ToArray(),
                 TotalCount = order.TotalCount,
                 TotalPrice = order.TotalPrice,
+                CellPhone = order.CellPhone,
+                DeliveryDescription = order.Delivery?.Description,
+                PaymentDescription = order.Payment?.Description,
             };
-        }
-
-        public IEnumerable<Book> GetOrderBooks()
-        {
-            return GetBooks(GetOrder());
-        }
-
-        public Order GetOrder()
-        {
-            if (TryGetOrder(out Order order))
-                return order;
-
-            throw new InvalidOperationException("Empty session.");
         }
 
         internal IEnumerable<Book> GetBooks(Order order)
         {
             var bookIds = order.Items.Select(item => item.BookId);
-
             return bookRepository.GetAllByIds(bookIds);
         }
 
@@ -109,7 +96,6 @@ namespace Store.Web.App
 
             return Map(order);
         }
-
         internal void AddOrUpdateItem(Order order, int bookId, int count)
         {
             var book = bookRepository.GetById(bookId);
@@ -117,6 +103,8 @@ namespace Store.Web.App
                 orderItem.Count += count;
             else
                 order.Items.Add(book.Id, book.Price, count);
+
+            orderRepository.Update(order);
         }
 
         internal void UpdateSession(Order order)
@@ -128,7 +116,7 @@ namespace Store.Web.App
         public OrderModel UpdateBook(int bookId, int count)
         {
             var order = GetOrder();
-            order.Items[bookId].Count = count;
+            order.Items.Get(bookId).Count = count;
 
             orderRepository.Update(order);
             UpdateSession(order);
@@ -147,6 +135,13 @@ namespace Store.Web.App
             return Map(order);
         }
 
+        public Order GetOrder()
+        {
+            if (TryGetOrder(out Order order))
+                return order;
+
+            throw new InvalidOperationException("Empty session.");
+        }
         public OrderModel SendConfirmation(string cellPhone)
         {
             var order = GetOrder();
@@ -169,6 +164,8 @@ namespace Store.Web.App
 
             return model;
         }
+
+        private readonly PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.GetInstance();
 
         public OrderModel ConfirmCellPhone(string cellPhone, int confirmationCode)
         {

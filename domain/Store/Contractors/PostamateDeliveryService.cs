@@ -38,10 +38,10 @@ namespace Store.Contractors
 
         public string Title => "Delivery by mail in Los Angeles and New York";
 
-        public Form FirstForm(int orderId, IEnumerable<Book> books)
+        public Form FirstForm(Order order)
         {
             return Form.CreateFirst(Name)
-                        .AddParameter(nameof(orderId), orderId.ToString())
+                        .AddParameter("orderId", order.Id.ToString())
                         .AddField(new SelectionField("City", "city", "1", cities));
         }
     

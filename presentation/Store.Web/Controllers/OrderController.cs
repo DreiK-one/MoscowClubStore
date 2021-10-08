@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Store.Web.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Store.Contractors;
 using Store.Web.Contractors;
@@ -89,10 +86,9 @@ namespace Store.Web.Controllers
         {
             var deliveryService = deliveryServices.Single(service => service.Name == serviceName);
             var order = orderService.GetOrder();
-            var books = orderService.GetOrderBooks();
-            var form = deliveryService.FirstForm(order.Id, books);
-            var webContractorService = webContractorServices.SingleOrDefault(service => service.Name == serviceName);
+            var form = deliveryService.FirstForm(order);
 
+            var webContractorService = webContractorServices.SingleOrDefault(service => service.Name == serviceName);
             if (webContractorService == null)
                 return View("DeliveryStep", form);
 
@@ -138,9 +134,10 @@ namespace Store.Web.Controllers
         {
             var paymentService = paymentServices.Single(service => service.Name == serviceName);
             var orderId = orderService.GetOrder().Id;
-            var form = paymentService.FirstForm(orderId);
-            var webContractorService = webContractorServices.SingleOrDefault(service => service.Name == serviceName);
+            var order = orderService.GetOrder();
+            var form = paymentService.FirstForm(order);
 
+            var webContractorService = webContractorServices.SingleOrDefault(service => service.Name == serviceName);
             if (webContractorService == null)
                 return View("PaymentStep", form);
 

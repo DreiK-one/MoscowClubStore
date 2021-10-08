@@ -9,9 +9,9 @@ namespace Store
 
         public string Description { get; }
 
-        public IReadOnlyDictionary<string, string> Parameters { get; }
+        public decimal Price { get; }
 
-        public decimal Amount { get; }
+        public IReadOnlyDictionary<string, string> Parameters { get; }
 
         public OrderDelivery(string uniqueCode, string description, decimal amount, IReadOnlyDictionary<string, string> parameters)
         {
@@ -27,7 +27,7 @@ namespace Store
             UniqueCode = uniqueCode;
             Description = description;
             Parameters = parameters;
-            Amount = amount;
+            Price = amount;
         }
     }
 }
