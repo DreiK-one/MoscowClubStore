@@ -40,7 +40,7 @@ namespace Store
 
         public static class DtoFactory
         {
-            public static OrderItemDto CreateDto(OrderDto order, int bookId, decimal price, int count)
+            public static OrderItemDto Create(OrderDto order, int bookId, decimal price, int count)
             {
                 if (order == null)
                     throw new ArgumentNullException(nameof(order));

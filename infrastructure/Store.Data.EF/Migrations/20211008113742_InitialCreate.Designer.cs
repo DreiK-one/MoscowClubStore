@@ -9,7 +9,7 @@ using Store.Data.EF;
 namespace Store.Data.EF.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20211007193054_InitialCreate")]
+    [Migration("20211008113742_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -22,7 +22,6 @@ namespace Store
                 dto.CellPhone = value;
             }
         }
-
         public OrderDelivery Delivery
         {
             get
@@ -48,7 +47,6 @@ namespace Store
                                               .ToDictionary(p => p.Key, p => p.Value);
             }
         }
-
         public OrderPayment Payment
         {
             get
@@ -72,15 +70,10 @@ namespace Store
                                              .ToDictionary(p => p.Key, p => p.Value);
             }
         }
-
         public OrderItemCollection Items { get; }
-
         public int TotalCount => Items.Sum(item => item.Count); 
 
         public decimal TotalPrice => Items.Sum(item => item.Price * item.Count) + (Delivery?.Price ?? 0m);
-
-        
-
         public Order(OrderDto dto)
         {
             this.dto = dto;
@@ -89,7 +82,7 @@ namespace Store
 
         public static class DtoFactory
         {
-            public static OrderDto CreateDto() => new OrderDto();
+            public static OrderDto Create() => new OrderDto();
         }
 
         public static class Mapper

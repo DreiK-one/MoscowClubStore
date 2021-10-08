@@ -12,7 +12,7 @@ namespace Store.Contractors
 
         string Title { get; }
 
-        Form FirstForm(int orderId, IEnumerable<Book> books);
+        Form FirstForm(Order order);
 
         Form NextForm(int step, IReadOnlyDictionary<string, string> values);
 

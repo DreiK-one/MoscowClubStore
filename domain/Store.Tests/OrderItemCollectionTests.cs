@@ -12,7 +12,7 @@ namespace Store.Tests
         {
             var order = CreateTestOrder();
 
-            var orderItem = order.Items[1];
+            var orderItem = order.Items.Get(1);
 
             Assert.Equal(3, orderItem.Count);
         }
@@ -37,7 +37,7 @@ namespace Store.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var item = order.Items[100];
+                var item = order.Items.Get(100);
             });
         }
 
@@ -48,7 +48,7 @@ namespace Store.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                order.Items.Add(1, 10m, 3);
+                order.Items.Add(1, 10m, 10);
             });
         }
 
@@ -59,7 +59,7 @@ namespace Store.Tests
 
             order.Items.Add(4, 30m, 10);
 
-            Assert.Equal(10, order.Items[4].Count);
+            Assert.Equal(10, order.Items.Get(4).Count);
         }
 
         [Fact]

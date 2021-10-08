@@ -3,8 +3,6 @@ using Store.Contractors;
 using Store.Web.Contractors;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
 
 
 namespace Store.YandexKassa
@@ -24,10 +22,10 @@ namespace Store.YandexKassa
 
         public string Title => "Payment by card";
 
-        public Form FirstForm(int orderId)
+        public Form FirstForm(Order order)
         {
             return Form.CreateFirst(Name)
-                       .AddParameter(nameof(orderId), orderId.ToString());
+                       .AddParameter("orderId", order.Id.ToString());
         }
 
         public Form NextForm(int step, IReadOnlyDictionary<string, string> values)

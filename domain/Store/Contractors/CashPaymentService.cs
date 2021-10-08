@@ -10,9 +10,9 @@ namespace Store.Contractors
 
         public string Title => "Cash payment";
 
-        public Form FirstForm(int orderId)
+        public Form FirstForm(Order order)
         {
-            return Form.CreateFirst(Name).AddParameter("orderId", orderId.ToString());
+            return Form.CreateFirst(Name).AddParameter("orderId", order.Id.ToString());
         }
 
         public Form NextForm(int step, IReadOnlyDictionary<string, string> values)
