@@ -207,7 +207,7 @@ namespace Store.Web.App
             orderRepository.Update(order);
             Session.RemoveCart();
 
-            notificationService.StartProcess(order);
+            //notificationService.StartProcess(order); For sending email
 
             return Map(order);
         }

@@ -12,23 +12,23 @@ namespace Store.Messages
             Debug.WriteLine("Cell phone: {0}, code: {1:0000}.", cellPhone, code);
         }
 
-        public void StartProcess(Order order)
-        {
-            using(var client = new SmtpClient())
-            {
-                var message = new MailMessage("from@at.my.domain", "to@at.my.domain");
-                message.Subject = "Order №" + order.Id;
+        //public void StartProcess(Order order)    For sending email
+        //{
+        //    using(var client = new SmtpClient())
+        //    {
+        //        var message = new MailMessage("from@at.my.domain", "to@at.my.domain");
+        //        message.Subject = "Order №" + order.Id;
 
-                var builder = new StringBuilder();
-                foreach (var item in order.Items)
-                {
-                    builder.Append($"{item.BookId}, {item.Count}");
-                    builder.AppendLine();
-                }
+        //        var builder = new StringBuilder();
+        //        foreach (var item in order.Items)
+        //        {
+        //            builder.Append($"{item.BookId}, {item.Count}");
+        //            builder.AppendLine();
+        //        }
 
-                message.Body = builder.ToString();
-                client.Send(message);
-            }
-        }
+        //        message.Body = builder.ToString();
+        //        client.Send(message);
+        //    }
+        //}
     }
 }
