@@ -17,9 +17,19 @@ namespace Store.Tests
             throw new NotImplementedException();
         }
 
+        public Task<Book[]> GetAllByIdsAsync(IEnumerable<int> bookIds)
+        {
+            throw new NotImplementedException();
+        }
+
         public Book[] GetAllByIsbn(string isbn)
         {
             return ResultOfGetAllByIsbn;
+        }
+
+        public Task<Book[]> GetAllByIsbnAsync(string isbn)
+        {
+            throw new NotImplementedException();
         }
 
         public Book[] GetAllByTitleOrAuthor(string titleOrAuthor)
@@ -27,7 +37,17 @@ namespace Store.Tests
             return ResultOfGetAllByTitleOrAuthor;
         }
 
+        public Task<Book[]> GetAllByTitleOrAuthorAsync(string titleOrAuthor)
+        {
+            throw new NotImplementedException();
+        }
+
         public Book GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Book> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
