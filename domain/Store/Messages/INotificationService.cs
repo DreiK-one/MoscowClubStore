@@ -9,6 +9,11 @@ namespace Store
     public interface INotificationService
     {
         void SendConfirmationCode(string cellPhone, int code);
+
+        Task SendConfirmationCodeAsync(string cellPhone, int code);
+
         //void StartProcess(Order order);  For sending email
+
+        //Task StartProcessAsync(Order order); For sending email async
     }
 }
